@@ -1,18 +1,29 @@
 #include <Arduino.h>
-
+#include "LSM6DSOX.h"
 // put function declarations here:
-int myFunction(int, int);
+LSM6DSOX imu;
 
 void setup() {
   // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(115200);
+  if (imu.begin()){
+    Serial.println("IMU initialised successfully");
+  } else {
+    Serial.println("IMU initialisation failed.");
+  }
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  float ax, ay, az;
+  imu.readAccel(ax, ay, az);
+  Serial.print("Accel X: ");
+  Serial.print(ax);
+  Serial.print(", Y: ");
+  Serial.print(ay);
+  Serial.print(", Z: ");
+  Serial.print(az);
+  Serial.println();
+  delay(500);
 }
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
