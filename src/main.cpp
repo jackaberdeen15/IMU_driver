@@ -1,11 +1,13 @@
 #include <Arduino.h>
-#include "LSM6DSOX.h"
+#include "LSM9DS1.h"
 // put function declarations here:
-LSM6DSOX imu;
+LSM9DS1 imu;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
+  while (!Serial);  // <-- wait for Serial Monitor to connect (important!)
+  Serial.println("Setup started.");
   if (imu.begin()){
     Serial.println("IMU initialised successfully");
   } else {
@@ -26,4 +28,6 @@ void loop() {
   Serial.println();
   delay(500);
 }
+
+
 
