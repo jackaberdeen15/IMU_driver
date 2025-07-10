@@ -19,6 +19,9 @@ void loop() {
   // put your main code here, to run repeatedly:
   float ax, ay, az;
   imu.readAccel(ax, ay, az);
+
+
+  
   Serial.print("Accel X: ");
   Serial.print(ax);
   Serial.print(", Y: ");

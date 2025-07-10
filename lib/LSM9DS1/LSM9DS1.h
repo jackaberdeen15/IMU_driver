@@ -17,7 +17,7 @@ private:
     void writeRegister(uint8_t reg, uint8_t value); //low level I2C operation for writing register
     void readMultiple(uint8_t startReg, uint8_t *buffer, size_t length); //Reads a block of register at once, i.e. (x,y,z)
     void configureSensor(); // 
-    void calibrateAccelBias(int samples = 100); //calibrate the offset bias of the sensor while at rest
+    void calibrateAccelBias(int samples=100); //calibrate the offset bias of the sensor while at rest
 
     // register addresses 
     static const uint8_t I2C_ADDR = 0x6B;
