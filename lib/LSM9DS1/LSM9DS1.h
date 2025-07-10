@@ -22,7 +22,7 @@ private:
     // register addresses 
     static const uint8_t I2C_ADDR = 0x6B;
     static const uint8_t WHO_AM_I = 0x0F;
-    static const uint8_t CTRL1_XL = 0x10;
+    static const uint8_t CTRL_REG6_XL = 0x20;
     static const uint8_t OUTX_L_XL = 0x28;
 
     //offset values

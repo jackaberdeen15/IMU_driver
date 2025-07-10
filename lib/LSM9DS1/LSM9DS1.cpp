@@ -48,8 +48,8 @@ bool LSM9DS1::begin(){
     uint8_t whoami = readRegister(WHO_AM_I); // reads WHO_AM_I register to confirm sensor is connected
     Serial.print("WHO_AM_I: 0x"); Serial.println(whoami, HEX);
 
-    uint8_t ctrl1 = readRegister(CTRL1_XL);
-    Serial.print("CTRL1_XL: 0x"); Serial.println(ctrl1, BIN);
+    uint8_t ctrl1 = readRegister(CTRL_REG6_XL);
+    Serial.print("CTRL_REG6_XL: 0x"); Serial.println(ctrl1, BIN);
 
     if (whoami != 0x68) return false; // whoami should return 0x6C else there is an error
     configureSensor();
@@ -59,11 +59,11 @@ bool LSM9DS1::begin(){
 
 void LSM9DS1::configureSensor(){
     // 104 Hz, 2g, BW = 50 Hz (from datasheet)
-    writeRegister(CTRL1_XL, 0b01000010); //write binary value to CTRL1_XL to enable the accelerometer at 104 Hz output datarate, +/- 2g range, with default bandwidth filter
+    writeRegister(CTRL_REG6_XL, 0b01100000); //write binary value to CTRL1_XL to enable the accelerometer at 119 Hz output datarate, +/- 2g range, with default bandwidth filter
     calibrateAccelBias(500); // calibrate the sensor for bias
 
-    uint8_t reg = readRegister(CTRL1_XL);
-    Serial.print("CTRL1_XL = 0x");
+    uint8_t reg = readRegister(CTRL_REG6_XL);
+    Serial.print("CTRL_REG6_XL = 0x");
     Serial.println(reg, HEX);
 }
 
