@@ -78,9 +78,49 @@ void LSM9DS1::readAccel(float &x, float &y, float &z){
 
     //convert raw lsb values to g-forces using sensitivity for +/- 2g mode (divided by 1000 as 0.061 mg/LSB is converted into 0.000061 g/LSB)
     const float sensitivity = 0.061f; // mg/lsb for +/- 2g 
+    x = rawX * sensitivity / 1000.0f + accelBiasX;
+    y = rawY * sensitivity / 1000.0f + accelBiasY;
+    z = rawZ * sensitivity / 1000.0f + accelBiasZ;
+}
+
+void LSM9DS1::readRawAccel(float &x, float &y, float &z){
+    uint8_t buffer[6];
+    readMultiple(OUTX_L_XL, buffer, 6); //stores x_l, x_h, y_l, y_h, z_l, z_h
+
+    //combine LSB and MSB into 16-bit integers
+    int16_t rawX = (int16_t)(buffer[1] << 8 | buffer[0]);
+    int16_t rawY = (int16_t)(buffer[3] << 8 | buffer[2]);
+    int16_t rawZ = (int16_t)(buffer[5] << 8 | buffer[4]);
+
+    //convert raw lsb values to g-forces using sensitivity for +/- 2g mode (divided by 1000 as 0.061 mg/LSB is converted into 0.000061 g/LSB)
+    const float sensitivity = 0.061f; // mg/lsb for +/- 2g 
     x = rawX * sensitivity / 1000.0f;
     y = rawY * sensitivity / 1000.0f;
     z = rawZ * sensitivity / 1000.0f;
+}
+
+void LSM9DS1::calibrateAccelBias(int samples = 100){
+    float sumX = 0, sumY = 0, sumZ = 0;
+
+    Serial.println("Calibrating sensor... Please keep the board still!");
+
+    for (int i=0; i<samples; i++){
+        float ax, ay, az;
+        readRawAccel(ax,ay,az); //function reads values from sensor
+        sumX+=ax;
+        sumY+=ay;
+        sumZ+=az;
+        delay(10); //sample at ~100Hz
+    }
+
+    accelBiasX = sumX / samples;
+    accelBiasY = sumY / samples;
+    accelBiasZ = sumZ / samples - 1.0; //subtract gravity (in g)
+
+    Serial.println("Calibration complete.");
+    Serial.print("Bias X: "); Serial.println(accelBiasX);
+    Serial.print("Bias Y: "); Serial.println(accelBiasY);
+    Serial.print("Bias Z: "); Serial.println(accelBiasZ);
 }
 
 
