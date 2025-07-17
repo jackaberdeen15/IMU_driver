@@ -11,6 +11,16 @@ public:
     bool begin(TwoWire &wire = Wire1); //sets up the sensor (calls configure sensor)
     void read(float &x, float &y, float &z); // gets calibrated sensor values and returns them as floats
     void calibrate(int samples = 100); //calibrate the offset bias of the sensor while at rest
+    void setBias(float bx, float by, float bz){
+        BiasX = bx;
+        BiasY = by;
+        BiasZ = bz;
+    }; 
+    void getBias(float &bx, float &by, float &bz){
+        bx = BiasX;
+        by = BiasY;
+        bz = BiasZ;
+    };
 private:
     TwoWire* _wire;
     
