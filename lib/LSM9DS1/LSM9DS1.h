@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 #include <Wire.h>
-//#include <EEPROM.h> install didnt work
-#include <FlashAsEEPROM.h> // acts like EEPROM
+#include <mbed.h>
+
 
 #include "LSM9DS1_Accel.h"
 #include "LSM9DS1_Gyro.h"
@@ -37,10 +37,16 @@ public:
 private:
   TwoWire* _wire;
   IMUBias biasData;
-  const uint32_t CALIB_MAGIC=0xDEADBEEF;
 
-  bool loadCalibration();
-  void saveCalibration();
+  // Flash storage helpers
+    bool loadCalibration();
+    void saveCalibration();
+    void eraseCalibration();
+
+    // FlashIAP instance and flash parameters
+    mbed::FlashIAP flash;
+    static constexpr uint32_t CALIB_MAGIC = 0xDEADBEEF;
+    uint32_t flash_start;
 };
 
 #endif

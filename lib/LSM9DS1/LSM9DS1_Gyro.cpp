@@ -3,7 +3,7 @@
 
 bool LSM9DS1_Gyro::begin(TwoWire &wire){
     _wire = &wire;
-    Serial.println("Starting imu.begin()...");
+    Serial.println("Starting gyro.begin()...");
     _wire->begin(); //start I2C communication
     delay(10);
 

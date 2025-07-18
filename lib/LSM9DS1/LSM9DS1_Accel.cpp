@@ -4,7 +4,7 @@
 
 bool LSM9DS1_Accel::begin(TwoWire &wire){
     _wire = &wire;
-    Serial.println("Starting imu.begin()...");
+    Serial.println("Starting accel.begin()...");
     _wire->begin(); //start I2C communication
     delay(10);
 

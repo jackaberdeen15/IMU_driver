@@ -3,7 +3,7 @@
 
 bool LSM9DS1_Mag::begin(TwoWire &wire){
     _wire = &wire;
-    Serial.println("Starting imu.begin()...");
+    Serial.println("Starting mag.begin()...");
     _wire->begin(); //start I2C communication
     delay(10);
 
