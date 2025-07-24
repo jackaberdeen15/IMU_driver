@@ -58,25 +58,39 @@ void LSM9DS1_Mag::readRaw(float &x, float &y, float &z){
     z = rawZ * sensitivity;
 }
 
-void LSM9DS1_Mag::calibrate(int samples){
-    float sumX = 0, sumY = 0, sumZ = 0;
+void LSM9DS1_Mag::calibrate(int durationms){
+    Serial.println("Magnetometer calibration starting in 3 seconds...");
+    delay(1000);
+    Serial.println("Magnetometer calibration starting in 2 seconds...");
+    delay(1000);
+    Serial.println("Magnetometer calibration starting in 1 seconds...");
+    delay(1000);
+    Serial.println("Move the device in a figure of eight or all directions.");
 
-    Serial.println("Calibrating Magnetometer... Please keep the board still!");
+    float minX = std::numeric_limits<float>::max(), minY = std::numeric_limits<float>::max(), minZ = std::numeric_limits<float>::max();
+    float maxX = -std::numeric_limits<float>::max(), maxY = -std::numeric_limits<float>::max(), maxZ = -std::numeric_limits<float>::max();
 
-    for (int i=0; i<samples; i++){
-        float ax, ay, az;
-        readRaw(ax,ay,az); //function reads values from sensor
-        sumX+=ax;
-        sumY+=ay;
-        sumZ+=az;
-        delay(10); //sample at 100Hz
+    unsigned long start = millis();
+
+    while (millis() - start < (unsigned long)durationms){
+        float mx, my, mz;
+        readRaw(mx, my, mz);
+
+        if (mx < minX) minX = mx;
+        if (mx > maxX) maxX = mx;
+        if (my < minY) minY = my;
+        if (my > maxY) maxY = my;
+        if (mz < minZ) minZ = mz;
+        if (mz > maxZ) maxZ = mz;
+
+        delay(50); //~20Hz
     }
 
-    BiasX = sumX / samples;
-    BiasY = sumY / samples;
-    BiasZ = sumZ / samples; //subtract gravity (in g)
+    BiasX = (maxX + minX) / 2.0f;
+    BiasY = (maxY + minY) / 2.0f;
+    BiasZ = (maxZ + minZ) / 2.0f;
 
-    Serial.println("Calibration complete.");
+    Serial.println("Magnetometer calibration complete.");
     Serial.print("Bias X: "); Serial.println(BiasX);
     Serial.print("Bias Y: "); Serial.println(BiasY);
     Serial.print("Bias Z: "); Serial.println(BiasZ);

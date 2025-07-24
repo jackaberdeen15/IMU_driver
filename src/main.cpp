@@ -19,11 +19,12 @@ void loop() {
   float ax, ay, az, gx, gy, gz, mx, my, mz;
   imu.readAll(ax, ay, az, gx, gy, gz, mx, my, mz);
 
-  Serial.print("Accel X: "); Serial.print(ax);
-  Serial.print(" Y: "); Serial.print(ay);
-  Serial.print(" Z: "); Serial.println(az);
+  Serial.println((String)"Accel X: " + ax + "g , Y: " + ay + "g, Z: " + az + "g");
+  Serial.println((String)"Gyro X: " + gx + "°/s, Y: " + gy + "°/s, Z: " + gz + "°/s");
+  Serial.println((String)"Mag X: " + mx + "G, Y: " + my + "G, Z: " + mz + "G");
+  Serial.println();
 
-  delay(500);
+  delay(1000);
 
   // Manual recalibration if 'C' is typed in Serial Monitor
   if (Serial.available()) {

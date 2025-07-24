@@ -15,6 +15,7 @@ bool LSM9DS1::begin(bool autoCalibrateIfNeeded){
         Serial.println("Loading calibration...");
         accel.setBias(biasData.accelBiasX, biasData.accelBiasY, biasData.accelBiasZ);
         gyro.setBias(biasData.gyroBiasX, biasData.gyroBiasY, biasData.gyroBiasZ);
+        mag.setBias(biasData.magBiasX, biasData.magBiasY, biasData.magBiasZ);
         Serial.println("Loaded calibration from flash.");
     } else if (autoCalibrateIfNeeded){
         Serial.println("No valid calibration found, running calibration...");
@@ -30,9 +31,12 @@ void LSM9DS1::calibrateAll() {
 
     accel.calibrate();
     gyro.calibrate();
+    mag.calibrate();
 
     accel.getBias(biasData.accelBiasX, biasData.accelBiasY, biasData.accelBiasZ);
     gyro.getBias(biasData.gyroBiasX, biasData.gyroBiasY, biasData.gyroBiasZ);
+    mag.getBias(biasData.magBiasX, biasData.magBiasY, biasData.magBiasZ);
+
     biasData.magic = CALIB_MAGIC;
 
     saveCalibration();

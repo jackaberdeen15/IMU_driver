@@ -73,7 +73,7 @@ void LSM9DS1_Gyro::calibrate(int samples){
     BiasY = sumY / samples;
     BiasZ = sumZ / samples; //subtract gravity (in g)
 
-    Serial.println("Calibration complete.");
+    Serial.println("Gyroscope calibration complete.");
     Serial.print("Bias X: "); Serial.println(BiasX);
     Serial.print("Bias Y: "); Serial.println(BiasY);
     Serial.print("Bias Z: "); Serial.println(BiasZ);

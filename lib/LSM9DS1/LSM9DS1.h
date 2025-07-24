@@ -13,6 +13,7 @@
 struct IMUBias{
   float accelBiasX, accelBiasY, accelBiasZ;
   float gyroBiasX, gyroBiasY, gyroBiasZ;
+  float magBiasX, magBiasY, magBiasZ;
   uint32_t magic;
 };
 
